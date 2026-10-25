@@ -1,9 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ArticleCard from "../../components/ui/ArticleCard.astro";
-import { getPublishedArticles } from "../../lib/articles";
+import { getAllPublishedArticles } from "../../lib/articles";
 
-const articles = await getPublishedArticles();
+const articles = await getAllPublishedArticles();
 ---
 
 <BaseLayout

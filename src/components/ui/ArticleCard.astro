@@ -1,69 +1,85 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import type { UnifiedArticle } from "../../lib/article-adapter";
 import CategoryBadge from "./CategoryBadge.astro";
 import { formatArticleDate } from "../../lib/articles";
 
 interface Props {
-    article: CollectionEntry<"articles">;
+  article: CollectionEntry<"articles"> | UnifiedArticle;
 }
 
 const { article } = Astro.props;
-const { data } = article;
+
+const isMarkdown = "data" in article;
+
+const id = article.id;
+
+const title = isMarkdown
+  ? article.data.title
+  : article.title;
+
+const description = isMarkdown
+  ? article.data.description
+  : article.description;
+
+const category = isMarkdown
+  ? article.data.category
+  : article.category;
+
+const pubDate = isMarkdown
+  ? article.data.pubDate
+  : article.pubDate;
+
+const readingTime = isMarkdown
+  ? article.data.readingTime
+  : article.readingTime;
 ---
 
 <article
-    class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5"
+  class="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-surface transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-black/5"
 >
-    <a
-        href={`/artikel/${article.id}/`}
-        class="block"
-        aria-label={`Baca ${data.title}`}
+  <a
+    href={`/artikel/${id}/`}
+    class="block"
+    aria-label={`Baca ${title}`}
+  >
+    <div
+      class="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-[#eeedff]"
     >
-        <div
-            class="relative flex aspect-[16/10] items-center justify-center overflow-hidden bg-[#eeedff]"
-        >
-            <div
-                class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-primary/10 blur-2xl"
-            >
-            </div>
-            <div
-                class="absolute -bottom-16 -left-12 h-48 w-48 rounded-full bg-primary/15 blur-2xl"
-            >
-            </div>
+      <div class="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-primary/10 blur-2xl"></div>
+      <div class="absolute -bottom-16 -left-12 h-48 w-48 rounded-full bg-primary/15 blur-2xl"></div>
 
-            <span
-                class="relative text-5xl font-bold tracking-tight text-primary/30 transition-transform duration-500 group-hover:scale-110"
-            >
-                &lt;/&gt;
-            </span>
-        </div>
-    </a>
-
-    <div class="flex flex-1 flex-col p-6">
-        <div class="mb-4">
-            <CategoryBadge category={data.category} />
-        </div>
-
-        <h3 class="text-xl font-bold leading-snug tracking-tight">
-            <a href={`/artikel/${article.id}/`} class="hover:text-primary">
-                {data.title}
-            </a>
-        </h3>
-
-        <p class="mt-3 line-clamp-3 text-sm leading-7 text-muted">
-            {data.description}
-        </p>
-
-        <div
-            class="mt-auto flex flex-wrap items-center gap-2 pt-6 text-xs text-muted"
-        >
-            <time datetime={data.pubDate.toISOString().slice(0, 10)}>
-                {formatArticleDate(data.pubDate)}
-            </time>
-
-            <span aria-hidden="true">•</span>
-
-            <span>{data.readingTime} menit baca</span>
-        </div>
+      <span
+        class="relative text-5xl font-bold tracking-tight text-primary/30 transition-transform duration-500 group-hover:scale-110"
+      >
+        &lt;/&gt;
+      </span>
     </div>
+  </a>
+
+  <div class="flex flex-1 flex-col p-6">
+    <div class="mb-4">
+      <CategoryBadge category={category} />
+    </div>
+
+    <h3 class="text-xl font-bold leading-snug tracking-tight">
+      <a href={`/artikel/${id}/`} class="hover:text-primary">
+        {title}
+      </a>
+    </h3>
+
+    <p class="mt-3 line-clamp-3 text-sm leading-7 text-muted">
+      {description}
+    </p>
+
+    <div class="mt-auto flex flex-wrap items-center gap-2 pt-6 text-xs text-muted">
+      <time datetime={pubDate.toISOString().slice(0, 10)}>
+        {formatArticleDate(pubDate)}
+      </time>
+
+      <span aria-hidden="true">•</span>
+
+      <span>{readingTime} menit baca</span>
+    </div>
+  </div>
 </article>

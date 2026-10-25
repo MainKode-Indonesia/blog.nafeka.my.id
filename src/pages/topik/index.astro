@@ -2,15 +2,16 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import TopicCard from "../../components/ui/TopicCard.astro";
 
-import { topics } from "../../data/topics";
-import { getPublishedArticles } from "../../lib/articles";
+import { getAllTopics, isArticleInTopic } from "../../lib/topics";
+import { getAllPublishedArticles } from "../../lib/articles";
 
-const articles = await getPublishedArticles();
+const topics = await getAllTopics();
+const articles = await getAllPublishedArticles();
 
 const topicsWithCount = topics.map((topic) => ({
     ...topic,
-    articleCount: articles.filter(
-        (article) => article.data.category === topic.name,
+    articleCount: articles.filter((article) =>
+        isArticleInTopic(article, topic)
     ).length,
 }));
 ---

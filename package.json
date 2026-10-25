@@ -12,11 +12,17 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.12",
     "@astrojs/rss": "^4.0.19",
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource/inter": "^5.3.0",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.4.2",
-    "tailwindcss": "^4.3.3"
+    "sanitize-html": "^2.18.1",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^6.0.3"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.16.2"
   }
 }

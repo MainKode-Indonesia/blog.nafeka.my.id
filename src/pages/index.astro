@@ -4,14 +4,19 @@ import ArticleCard from "../components/ui/ArticleCard.astro";
 import CategoryBadge from "../components/ui/CategoryBadge.astro";
 
 import {
-	getFeaturedArticle,
-	getLatestArticles,
-	formatArticleDate,
+    getFeaturedArticle,
+    getAllPublishedArticles,
+    formatArticleDate,
 } from "../lib/articles";
 import { topics } from "../data/topics";
 import TopicCard from "../components/ui/TopicCard.astro";
 const featuredArticle = await getFeaturedArticle();
-const latestArticles = await getLatestArticles(6);
+
+const allArticles = await getAllPublishedArticles();
+
+const latestArticles = allArticles
+    .filter((article) => article.id !== featuredArticle?.id)
+    .slice(0, 6);
 ---
 
 <BaseLayout
