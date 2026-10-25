@@ -1,11 +1,219 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ArticleCard from "../components/ui/ArticleCard.astro";
+import CategoryBadge from "../components/ui/CategoryBadge.astro";
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import {
+	getFeaturedArticle,
+	getLatestArticles,
+	formatArticleDate,
+} from "../lib/articles";
+import { topics } from "../data/topics";
+import TopicCard from "../components/ui/TopicCard.astro";
+const featuredArticle = await getFeaturedArticle();
+const latestArticles = await getLatestArticles(6);
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<BaseLayout
+	title="KataKode — Bercerita tentang kode"
+	description="Artikel, tutorial, dan cerita seputar teknologi, programming, Linux, dan web development."
+>
+	<main>
+		<!-- HERO -->
+		<section class="container-site pb-16 pt-20 md:pb-24 md:pt-28">
+			<div class="max-w-4xl">
+				<span class="eyebrow"> A space for ideas & technology </span>
+
+				<h1
+					class="mt-7 text-5xl font-bold leading-[1.12] tracking-tight md:text-7xl lg:text-8xl"
+				>
+					Setiap kode
+					<span class="text-primary"> punya cerita.</span>
+				</h1>
+
+				<p
+					class="mt-8 max-w-2xl text-base leading-8 text-muted md:text-xl"
+				>
+					Menjelajahi dunia teknologi melalui ide, pengalaman, dan
+					pengetahuan. Dari baris kode pertama hingga sistem yang
+					menghubungkan dunia.
+				</p>
+
+				<div class="mt-9 flex flex-wrap items-center gap-4">
+					<a
+						href="/artikel/"
+						class="rounded-full bg-foreground px-7 py-3.5 text-sm font-semibold text-white hover:bg-primary"
+					>
+						Jelajahi Artikel
+					</a>
+
+					<a
+						href="/tentang/"
+						class="rounded-full border border-border px-7 py-3.5 text-sm font-semibold hover:border-primary hover:text-primary"
+					>
+						Tentang KataKode
+					</a>
+				</div>
+			</div>
+		</section>
+
+		<!-- FEATURED ARTICLE -->
+		{
+			featuredArticle && (
+				<section class="container-site pb-20">
+					<div class="mb-8 flex items-center justify-between gap-4">
+						<div>
+							<span class="eyebrow">Editor's pick</span>
+							<h2 class="mt-3 text-3xl font-bold tracking-tight md:text-4xl">
+								Artikel Pilihan
+							</h2>
+						</div>
+					</div>
+
+					<article class="grid overflow-hidden rounded-3xl border border-border bg-surface lg:grid-cols-2">
+						<a
+							href={`/artikel/${featuredArticle.id}/`}
+							class="group relative flex min-h-72 items-center justify-center overflow-hidden bg-[#eeedff] lg:min-h-[430px]"
+							aria-label={`Baca ${featuredArticle.data.title}`}
+						>
+							<div class="absolute left-1/4 top-1/4 h-64 w-64 rounded-full bg-primary/20 blur-3xl" />
+							<span class="relative text-8xl font-bold text-primary/25 transition-transform duration-500 group-hover:scale-110">
+								&lt;/&gt;
+							</span>
+						</a>
+						<div class="flex flex-col justify-center p-8 md:p-12">
+							<div>
+								<CategoryBadge
+									category={featuredArticle.data.category}
+								/>
+							</div>
+
+							<h3 class="mt-6 text-3xl font-bold leading-tight tracking-tight md:text-4xl">
+								<a
+									href={`/artikel/${featuredArticle.id}/`}
+									class="hover:text-primary"
+								>
+									{featuredArticle.data.title}
+								</a>
+							</h3>
+
+							<p class="mt-5 text-base leading-8 text-muted">
+								{featuredArticle.data.description}
+							</p>
+
+							<div class="mt-7 flex flex-wrap gap-2 text-sm text-muted">
+								<time
+									datetime={featuredArticle.data.pubDate
+										.toISOString()
+										.slice(0, 10)}
+								>
+									{formatArticleDate(
+										featuredArticle.data.pubDate,
+									)}
+								</time>
+
+								<span>•</span>
+
+								<span>
+									{featuredArticle.data.readingTime} menit
+									baca
+								</span>
+							</div>
+
+							<a
+								href={`/artikel/${featuredArticle.id}/`}
+								class="mt-8 inline-flex w-fit items-center gap-2 text-sm font-semibold text-primary hover:gap-3"
+							>
+								Baca Artikel <span aria-hidden="true">→</span>
+							</a>
+						</div>
+						)
+					</article>
+				</section>
+			)
+		}
+
+		<!-- TOPICS -->
+		<section class="border-y border-border bg-surface">
+			<div class="container-site section-spacing">
+				<div class="mb-10">
+					<span class="eyebrow">Explore topics</span>
+					<h2
+						class="mt-3 text-3xl font-bold tracking-tight md:text-4xl"
+					>
+						Jelajahi Topik
+					</h2>
+					<p class="mt-3 max-w-xl text-sm leading-7 text-muted">
+						Temukan pembahasan teknologi berdasarkan bidang yang
+						ingin kamu pelajari.
+					</p>
+				</div>
+				<div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+					{topics.map((topic) => <TopicCard topic={topic} />)}
+				</div>
+			</div>
+		</section>
+
+		<!-- LATEST ARTICLES -->
+		<section class="container-site section-spacing">
+			<div class="mb-10 flex flex-wrap items-end justify-between gap-5">
+				<div>
+					<span class="eyebrow">Fresh perspectives</span>
+					<h2
+						class="mt-3 text-3xl font-bold tracking-tight md:text-4xl"
+					>
+						Artikel Terbaru
+					</h2>
+				</div>
+
+				<a
+					href="/artikel/"
+					class="text-sm font-semibold text-primary hover:underline"
+				>
+					Semua Artikel →
+				</a>
+			</div>
+
+			<div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+				{
+					latestArticles.map((article) => (
+						<ArticleCard article={article} />
+					))
+				}
+			</div>
+		</section>
+
+		<!-- CLOSING CTA -->
+		<section class="container-site pb-20 md:pb-28">
+			<div
+				class="overflow-hidden rounded-3xl bg-foreground px-8 py-16 text-center text-white md:px-16 md:py-20"
+			>
+				<span
+					class="text-xs font-semibold uppercase tracking-[0.2em] text-white/50"
+				>
+					Keep exploring
+				</span>
+
+				<h2
+					class="mx-auto mt-5 max-w-2xl text-3xl font-bold tracking-tight md:text-5xl"
+				>
+					Selalu ada hal baru untuk dipelajari.
+				</h2>
+
+				<p
+					class="mx-auto mt-5 max-w-xl text-sm leading-7 text-white/60 md:text-base"
+				>
+					Satu ide bisa membuka banyak kemungkinan. Mulai perjalanan
+					belajarmu bersama KataKode.
+				</p>
+
+				<a
+					href="/artikel/"
+					class="mt-8 inline-flex rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-foreground hover:bg-primary hover:text-white"
+				>
+					Mulai Membaca
+				</a>
+			</div>
+		</section>
+	</main>
+</BaseLayout>

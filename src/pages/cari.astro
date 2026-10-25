@@ -1,0 +1,187 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+    title="Cari Artikel — KataKode"
+    description="Cari artikel dan tutorial teknologi di KataKode."
+>
+    <main class="container-site section-spacing">
+        <header class="mx-auto mb-12 max-w-3xl text-center">
+            <span class="eyebrow">Explore Knowledge</span>
+
+            <h1 class="mt-5 text-4xl font-bold tracking-tight md:text-6xl">
+                Cari <span class="text-primary">Artikel.</span>
+            </h1>
+
+            <p class="mt-5 text-base leading-8 text-muted">
+                Temukan pembahasan teknologi berdasarkan kata kunci, kategori,
+                atau topik yang ingin kamu pelajari.
+            </p>
+        </header>
+
+        <div class="mx-auto max-w-3xl">
+            <label for="search-input" class="mb-3 block text-sm font-semibold">
+                Kata kunci pencarian
+            </label>
+
+            <div class="relative">
+                <svg
+                    class="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                >
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                </svg>
+
+                <input
+                    id="search-input"
+                    type="search"
+                    placeholder="Cari artikel, Linux, HTML, JavaScript..."
+                    autocomplete="off"
+                    class="w-full rounded-2xl border border-border bg-surface py-5 pl-14 pr-5 text-base outline-none transition-colors placeholder:text-muted focus:border-primary focus:ring-2 focus:ring-primary/10"
+                />
+            </div>
+
+            <p
+                id="search-status"
+                class="mt-6 text-sm text-muted"
+                role="status"
+                aria-live="polite"
+            >
+                Memuat artikel...
+            </p>
+
+            <div id="search-results" class="mt-8 space-y-4"></div>
+        </div>
+    </main>
+</BaseLayout>
+
+<script>
+    interface SearchArticle {
+        title: string;
+        description: string;
+        category: string;
+        tags: string[];
+        url: string;
+        date: string;
+        readingTime: number;
+    }
+
+    const input = document.querySelector<HTMLInputElement>("#search-input");
+    const results = document.querySelector<HTMLDivElement>("#search-results");
+    const status = document.querySelector<HTMLElement>("#search-status");
+
+    let articles: SearchArticle[] = [];
+
+    function normalize(value: string) {
+        return value.toLocaleLowerCase("id-ID").trim();
+    }
+
+    function createResult(article: SearchArticle) {
+        const card = document.createElement("article");
+        card.className =
+            "rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-primary/40";
+
+        const category = document.createElement("p");
+        category.className =
+            "text-xs font-semibold uppercase tracking-wider text-primary";
+        category.textContent = article.category;
+
+        const heading = document.createElement("h2");
+        heading.className = "mt-3 text-xl font-bold";
+
+        const link = document.createElement("a");
+        link.href = article.url;
+        link.className = "hover:text-primary";
+        link.textContent = article.title;
+        heading.appendChild(link);
+
+        const description = document.createElement("p");
+        description.className = "mt-3 text-sm leading-7 text-muted";
+        description.textContent = article.description;
+
+        const metadata = document.createElement("p");
+        metadata.className = "mt-4 text-xs text-muted";
+        metadata.textContent = `${article.readingTime} menit baca`;
+
+        card.append(category, heading, description, metadata);
+
+        return card;
+    }
+
+    function renderResults() {
+        if (!input || !results || !status) return;
+
+        const query = normalize(input.value);
+
+        results.replaceChildren();
+
+        if (!query) {
+            status.textContent = `${articles.length} artikel tersedia. Ketik kata kunci untuk mencari.`;
+            return;
+        }
+
+        const matches = articles.filter((article) => {
+            const searchableText = [
+                article.title,
+                article.description,
+                article.category,
+                ...article.tags,
+            ].join(" ");
+
+            return normalize(searchableText).includes(query);
+        });
+
+        status.textContent = `${matches.length} hasil ditemukan untuk "${input.value.trim()}".`;
+
+        if (matches.length === 0) {
+            const empty = document.createElement("p");
+            empty.className =
+                "rounded-2xl border border-border bg-surface p-8 text-center text-sm text-muted";
+            empty.textContent =
+                "Artikel tidak ditemukan. Coba gunakan kata kunci lain.";
+
+            results.appendChild(empty);
+            return;
+        }
+
+        const fragment = document.createDocumentFragment();
+
+        matches.forEach((article) => {
+            fragment.appendChild(createResult(article));
+        });
+
+        results.appendChild(fragment);
+    }
+
+    async function initSearch() {
+        if (!input || !results || !status) return;
+
+        try {
+            const response = await fetch("/search-index.json");
+
+            if (!response.ok) {
+                throw new Error("Gagal mengambil data artikel.");
+            }
+
+            articles = await response.json();
+
+            const params = new URLSearchParams(window.location.search);
+            input.value = params.get("q") ?? "";
+
+            renderResults();
+            input.addEventListener("input", renderResults);
+        } catch (error) {
+            status.textContent =
+                "Pencarian belum tersedia. Silakan coba lagi nanti.";
+            console.error(error);
+        }
+    }
+
+    initSearch();
+</script>

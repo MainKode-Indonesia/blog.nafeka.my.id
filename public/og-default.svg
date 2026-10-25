@@ -1,0 +1,30 @@
+
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#FAFAF8"/>
+  <circle cx="1040" cy="100" r="260" fill="#EEEDFF"/>
+  <circle cx="1120" cy="560" r="210" fill="#E5E2FF"/>
+
+  <text x="90" y="180"
+        font-family="Arial, sans-serif"
+        font-size="48" font-weight="700" fill="#18181B">
+    Kata<tspan fill="#635BFF">Kode.</tspan>
+  </text>
+
+  <text x="90" y="330"
+        font-family="Arial, sans-serif"
+        font-size="72" font-weight="700" fill="#18181B">
+    Setiap kode
+  </text>
+  <text x="90" y="415"
+        font-family="Arial, sans-serif"
+        font-size="72" font-weight="700" fill="#635BFF">
+    punya cerita.
+  </text>
+
+  <text x="90" y="540"
+        font-family="Arial, sans-serif"
+        font-size="26" fill="#71717A">
+    Part of Nafeka Ecosystem
+  </text>
+</svg>

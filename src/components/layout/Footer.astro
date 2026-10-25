@@ -1,0 +1,81 @@
+---
+const currentYear = new Date().getFullYear();
+
+const exploreLinks = [
+    { label: "Beranda", href: "/" },
+    { label: "Artikel", href: "/artikel/" },
+    { label: "Topik", href: "/topik/" },
+    { label: "Tentang", href: "/tentang/" },
+];
+
+const ecosystemLinks = [
+    { label: "Nafeka", href: "https://nafeka.my.id" },
+    { label: "MainKode", href: "https://mainkode.nafeka.my.id" },
+];
+---
+
+<footer class="border-t border-border bg-surface">
+    <div class="container-site py-16">
+        <div class="grid gap-12 md:grid-cols-3">
+            <div>
+                <a href="/" class="text-2xl font-bold tracking-tight">
+                    Kata<span class="text-primary">Kode.</span>
+                </a>
+
+                <p class="mt-4 max-w-sm text-sm leading-7 text-muted">
+                    Ruang untuk berbagi cerita, ide, pengalaman, dan pengetahuan
+                    seputar teknologi dan pemrograman.
+                </p>
+
+                <p class="mt-5 text-xs font-medium text-muted">
+                    Bercerita tentang kode.
+                </p>
+            </div>
+
+            <div>
+                <h2 class="mb-5 text-sm font-semibold">Jelajahi</h2>
+                <ul class="space-y-3">
+                    {
+                        exploreLinks.map((link) => (
+                            <li>
+                                <a
+                                    href={link.href}
+                                    class="text-sm text-muted hover:text-primary"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+
+            <div>
+                <h2 class="mb-5 text-sm font-semibold">Nafeka Ecosystem</h2>
+                <ul class="space-y-3">
+                    {
+                        ecosystemLinks.map((link) => (
+                            <li>
+                                <a
+                                    href={link.href}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    class="text-sm text-muted hover:text-primary"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
+                        ))
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <div
+            class="mt-14 flex flex-col gap-4 border-t border-border pt-6 text-xs text-muted md:flex-row md:items-center md:justify-between"
+        >
+            <p>© {currentYear} KataKode. All rights reserved.</p>
+            <p>Part of Nafeka Ecosystem.</p>
+        </div>
+    </div>
+</footer>

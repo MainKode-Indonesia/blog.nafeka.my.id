@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArticleCard from "../../components/ui/ArticleCard.astro";
+import { getPublishedArticles } from "../../lib/articles";
+
+const articles = await getPublishedArticles();
+---
+
+<BaseLayout
+    title="Semua Artikel — KataKode"
+    description="Jelajahi seluruh artikel dan tutorial teknologi di KataKode."
+>
+    <main class="container-site section-spacing">
+        <header class="mb-14 max-w-3xl">
+            <span class="eyebrow">KataKode Library</span>
+
+            <h1 class="mt-5 text-5xl font-bold tracking-tight md:text-6xl">
+                Semua Artikel<span class="text-primary">.</span>
+            </h1>
+
+            <p class="mt-6 text-lg leading-8 text-muted">
+                Kumpulan ide, cerita, dan tutorial seputar teknologi dan dunia
+                pemrograman.
+            </p>
+
+            <p class="mt-5 text-sm text-muted">
+                {articles.length} artikel tersedia
+            </p>
+        </header>
+
+        {
+            articles.length > 0 ? (
+                <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {articles.map((article) => (
+                        <ArticleCard article={article} />
+                    ))}
+                </div>
+            ) : (
+                <div class="rounded-2xl border border-border bg-surface p-10 text-center">
+                    <p class="text-muted">
+                        Belum ada artikel yang dipublikasikan.
+                    </p>
+                </div>
+            )
+        }
+    </main>
+</BaseLayout>

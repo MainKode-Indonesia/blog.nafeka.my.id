@@ -1,0 +1,152 @@
+---
+const navLinks = [
+    { label: "Beranda", href: "/" },
+    { label: "Artikel", href: "/artikel/" },
+    { label: "Topik", href: "/topik/" },
+    { label: "Tentang", href: "/tentang/" },
+];
+
+const pathname = Astro.url.pathname;
+---
+
+<header
+    class="sticky top-0 z-50 border-b border-border bg-background/95 backdrop-blur-md"
+>
+    <nav
+        class="container-site flex h-20 items-center justify-between gap-6"
+        aria-label="Navigasi utama"
+    >
+        <a
+            href="/"
+            class="shrink-0 text-2xl font-bold tracking-tight text-foreground"
+        >
+            Kata<span class="text-primary">Kode.</span>
+        </a>
+
+        <!-- Desktop navigation -->
+        <div class="hidden items-center gap-8 md:flex">
+            {
+                navLinks.map((link) => (
+                    <a
+                        href={link.href}
+                        aria-current={
+                            pathname === link.href ? "page" : undefined
+                        }
+                        class:list={[
+                            "text-sm font-medium transition-colors hover:text-primary",
+                            pathname === link.href
+                                ? "text-primary"
+                                : "text-muted",
+                        ]}
+                    >
+                        {link.label}
+                    </a>
+                ))
+            }
+        </div>
+
+        <div class="hidden items-center gap-3 md:flex">
+            <a
+                href="/cari/"
+                aria-label="Cari artikel"
+                title="Cari artikel"
+                class="flex h-10 w-10 items-center justify-center rounded-full border border-border text-foreground hover:border-primary hover:text-primary"
+            >
+                <svg
+                    class="h-5 w-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                >
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-4-4"></path>
+                </svg>
+            </a>
+
+            <a
+                href="/artikel/"
+                class="rounded-full bg-foreground px-5 py-2.5 text-sm font-semibold text-white hover:bg-primary"
+            >
+                Mulai Membaca
+            </a>
+        </div>
+
+        <!-- Mobile navigation -->
+        <details class="group relative md:hidden">
+            <summary
+                class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-lg border border-border text-foreground [&::-webkit-details-marker]:hidden"
+                aria-label="Buka menu navigasi"
+            >
+                <svg
+                    class="h-5 w-5 group-open:hidden"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                >
+                    <path d="M4 7h16M4 12h16M4 17h16"></path>
+                </svg>
+                <svg
+                    class="hidden h-5 w-5 group-open:block"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    aria-hidden="true"
+                >
+                    <path d="M6 6l12 12M18 6L6 18"></path>
+                </svg>
+            </summary>
+
+            <div
+                class="absolute right-0 top-14 w-64 rounded-xl border border-border bg-surface p-3 shadow-xl"
+            >
+                {
+                    navLinks.map((link) => (
+                        <a
+                            href={link.href}
+                            aria-current={
+                                pathname === link.href ? "page" : undefined
+                            }
+                            class:list={[
+                                "flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium transition-colors hover:bg-background hover:text-primary",
+                                pathname === link.href
+                                    ? "bg-primary/5 text-primary"
+                                    : "text-foreground",
+                            ]}
+                        >
+                            {link.label}
+                        </a>
+                    ))
+                }
+
+                <!-- Search Mobile -->
+                <div class="mt-2 border-t border-border pt-2">
+                    <a
+                        href="/cari/"
+                        class="flex items-center gap-3 rounded-lg bg-primary/5 px-4 py-3 text-sm font-semibold text-primary transition-colors hover:bg-primary/10"
+                    >
+                        <svg
+                            class="h-4 w-4 shrink-0"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <circle cx="11" cy="11" r="7"></circle>
+                            <path d="m20 20-4-4"></path>
+                        </svg>
+
+                        <span>Cari Artikel</span>
+                    </a>
+                </div>
+            </div>
+        </details>
+    </nav>
+</header>

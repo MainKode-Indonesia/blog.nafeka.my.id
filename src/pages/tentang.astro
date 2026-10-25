@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+    title="Tentang KataKode — Bercerita tentang kode"
+    description="Kenali KataKode, ruang untuk belajar, mengeksplorasi, dan berbagi pengetahuan seputar teknologi."
+>
+    <main>
+        <!-- HERO -->
+        <section class="container-site py-24 md:py-36">
+            <div class="mx-auto max-w-4xl text-center">
+                <span class="eyebrow"> 01 / Mengenal KataKode </span>
+
+                <h1
+                    class="mt-8 text-5xl font-bold leading-tight tracking-tight md:text-7xl"
+                >
+                    Setiap kode
+                    <span class="text-primary">punya cerita.</span>
+                </h1>
+
+                <p class="mx-auto mt-8 max-w-2xl text-lg leading-9 text-muted">
+                    KataKode adalah ruang untuk belajar, memahami, dan berbagi
+                    cerita tentang teknologi. Dari baris kode pertama hingga
+                    ide-ide yang terus berkembang.
+                </p>
+            </div>
+        </section>
+
+        <!-- CERITA -->
+        <section class="border-y border-border bg-surface py-24">
+            <div class="container-site">
+                <div class="grid gap-12 md:grid-cols-2 md:gap-20">
+                    <div>
+                        <span class="eyebrow"> 02 / Cerita Kami </span>
+
+                        <h2
+                            class="mt-6 text-3xl font-bold tracking-tight md:text-5xl"
+                        >
+                            Lebih dari sekadar
+                            <span class="text-primary">menulis kode.</span>
+                        </h2>
+                    </div>
+
+                    <div class="space-y-6 text-base leading-8 text-muted">
+                        <p>
+                            Teknologi terus berkembang, begitu pula cara kita
+                            mempelajarinya. Di balik setiap aplikasi, website,
+                            dan sistem yang kita gunakan, selalu ada proses
+                            belajar yang menarik.
+                        </p>
+
+                        <p>
+                            KataKode hadir untuk membagikan proses tersebut
+                            melalui artikel, tutorial, dan pembahasan yang mudah
+                            dipahami.
+                        </p>
+
+                        <p>
+                            Kami percaya bahwa belajar teknologi tidak harus
+                            terasa rumit. Hal-hal kompleks bisa dijelaskan
+                            dengan cara yang sederhana, tanpa kehilangan
+                            kedalaman materinya.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NILAI -->
+        <section class="container-site py-24 md:py-32">
+            <div class="mb-14 max-w-2xl">
+                <span class="eyebrow"> 03 / Yang Kami Percaya </span>
+
+                <h2 class="mt-6 text-3xl font-bold tracking-tight md:text-5xl">
+                    Belajar adalah
+                    <span class="text-primary">perjalanan.</span>
+                </h2>
+
+                <p class="mt-5 leading-8 text-muted">
+                    Empat hal sederhana yang menjadi dasar setiap cerita di
+                    KataKode.
+                </p>
+            </div>
+
+            <div class="grid gap-5 md:grid-cols-2">
+                {
+                    [
+                        {
+                            number: "01",
+                            title: "Belajar",
+                            description:
+                                "Setiap orang punya titik awal. Kami ingin membuat langkah pertama terasa lebih mudah.",
+                        },
+                        {
+                            number: "02",
+                            title: "Eksplorasi",
+                            description:
+                                "Teknologi selalu menghadirkan hal baru yang menarik untuk dicoba dan dipahami.",
+                        },
+                        {
+                            number: "03",
+                            title: "Berbagi",
+                            description:
+                                "Pengetahuan menjadi lebih bermakna ketika bisa membantu orang lain.",
+                        },
+                        {
+                            number: "04",
+                            title: "Berkembang",
+                            description:
+                                "Tidak harus langsung mahir. Yang penting terus belajar dan melangkah maju.",
+                        },
+                    ].map((value) => (
+                        <article class="rounded-3xl border border-border bg-surface p-8 transition-colors hover:border-primary/40 md:p-10">
+                            <span class="text-sm font-semibold text-primary">
+                                {value.number}
+                            </span>
+
+                            <h3 class="mt-8 text-2xl font-bold">
+                                {value.title}
+                            </h3>
+
+                            <p class="mt-4 leading-8 text-muted">
+                                {value.description}
+                            </p>
+                        </article>
+                    ))
+                }
+            </div>
+        </section>
+
+        <!-- EKOSISTEM -->
+        <section class="border-y border-border bg-surface py-24">
+            <div class="container-site">
+                <div class="mx-auto max-w-3xl text-center">
+                    <span class="eyebrow"> 04 / Nafeka Ecosystem </span>
+
+                    <h2
+                        class="mt-6 text-3xl font-bold tracking-tight md:text-5xl"
+                    >
+                        Bagian dari sesuatu
+                        <span class="text-primary">yang lebih besar.</span>
+                    </h2>
+
+                    <p class="mt-6 leading-8 text-muted">
+                        KataKode merupakan bagian dari Nafeka Ecosystem, sebuah
+                        ruang pengembangan berbagai proyek dan pengalaman
+                        digital.
+                    </p>
+
+                    <div class="mt-10 flex flex-wrap justify-center gap-4">
+                        <a
+                            href="https://nafeka.my.id"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:border-primary hover:text-primary"
+                        >
+                            Nafeka Website ↗
+                        </a>
+
+                        <a
+                            href="https://mainkode.nafeka.my.id"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            class="rounded-full border border-border px-6 py-3 text-sm font-semibold transition-colors hover:border-primary hover:text-primary"
+                        >
+                            MainKode ↗
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="container-site py-24 md:py-32">
+            <div class="mx-auto max-w-3xl text-center">
+                <span class="eyebrow"> 05 / Mulai Membaca </span>
+
+                <h2 class="mt-6 text-3xl font-bold tracking-tight md:text-5xl">
+                    Cerita berikutnya
+                    <span class="text-primary">menunggumu.</span>
+                </h2>
+
+                <p class="mx-auto mt-6 max-w-xl leading-8 text-muted">
+                    Jelajahi artikel dan temukan sesuatu yang baru untuk
+                    dipelajari hari ini.
+                </p>
+
+                <a
+                    href="/artikel/"
+                    class="mt-10 inline-flex rounded-full bg-foreground px-8 py-4 text-sm font-semibold text-white transition-colors hover:bg-primary"
+                >
+                    Jelajahi Artikel
+                    <span class="ml-3">↗</span>
+                </a>
+            </div>
+        </section>
+    </main>
+</BaseLayout>

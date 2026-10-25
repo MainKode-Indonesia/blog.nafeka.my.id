@@ -1,0 +1,47 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TopicCard from "../../components/ui/TopicCard.astro";
+
+import { topics } from "../../data/topics";
+import { getPublishedArticles } from "../../lib/articles";
+
+const articles = await getPublishedArticles();
+
+const topicsWithCount = topics.map((topic) => ({
+    ...topic,
+    articleCount: articles.filter(
+        (article) => article.data.category === topic.name,
+    ).length,
+}));
+---
+
+<BaseLayout
+    title="Jelajahi Topik — KataKode"
+    description="Jelajahi berbagai kategori artikel teknologi, programming, Linux, dan networking di KataKode."
+>
+    <main class="container-site section-spacing">
+        <header class="mb-14 max-w-3xl">
+            <span class="eyebrow">Explore Knowledge</span>
+
+            <h1 class="mt-5 text-5xl font-bold tracking-tight md:text-6xl">
+                Jelajahi <span class="text-primary">Topik.</span>
+            </h1>
+
+            <p class="mt-6 text-lg leading-8 text-muted">
+                Setiap bidang teknologi memiliki cerita dan pengetahuan menarik
+                untuk dijelajahi. Pilih topik yang ingin kamu pelajari.
+            </p>
+        </header>
+
+        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+            {
+                topicsWithCount.map((topic) => (
+                    <TopicCard
+                        topic={topic}
+                        articleCount={topic.articleCount}
+                    />
+                ))
+            }
+        </div>
+    </main>
+</BaseLayout>

@@ -1,0 +1,133 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+
+export async function getStaticPaths() {
+    const articles = await getCollection("articles", ({ data }) => !data.draft);
+
+    return articles.map((article) => ({
+        params: { slug: article.id },
+        props: { article },
+    }));
+}
+
+interface Props {
+    article: CollectionEntry<"articles">;
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+
+const date = new Intl.DateTimeFormat("id-ID", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+}).format(article.data.pubDate);
+
+const articleUrl = new URL(`/artikel/${article.id}/`, Astro.site ?? Astro.url)
+    .href;
+
+const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: article.data.title,
+    description: article.data.description,
+    datePublished: article.data.pubDate.toISOString(),
+    dateModified: (
+        article.data.updatedDate ?? article.data.pubDate
+    ).toISOString(),
+    mainEntityOfPage: articleUrl,
+    author: {
+        "@type": "Organization",
+        name: "KataKode",
+    },
+    publisher: {
+        "@type": "Organization",
+        name: "KataKode",
+        url: "https://blog.nafeka.my.id",
+    },
+};
+---
+
+<BaseLayout
+    title={`${article.data.title} — KataKode`}
+    description={article.data.description}
+    type="article"
+    publishedTime={article.data.pubDate.toISOString()}
+    modifiedTime={article.data.updatedDate?.toISOString()}
+>
+    <script
+        type="application/ld+json"
+        set:html={JSON.stringify(articleSchema).replace(/</g, "\\u003c")}
+    />
+
+    <main class="container-site py-16 md:py-24">
+        <article class="mx-auto max-w-3xl">
+            <a
+                href="/artikel/"
+                class="text-sm font-medium text-muted hover:text-primary"
+            >
+                ← Kembali ke Artikel
+            </a>
+
+            <header class="mt-12 border-b border-border pb-10">
+                <span class="eyebrow">
+                    {article.data.category}
+                </span>
+
+                <h1
+                    class="mt-5 text-4xl font-bold leading-tight tracking-tight md:text-6xl"
+                >
+                    {article.data.title}
+                </h1>
+
+                <p class="mt-6 text-lg leading-8 text-muted">
+                    {article.data.description}
+                </p>
+
+                <div
+                    class="mt-7 flex flex-wrap items-center gap-3 text-sm text-muted"
+                >
+                    <time
+                        datetime={article.data.pubDate
+                            .toISOString()
+                            .slice(0, 10)}
+                    >
+                        {date}
+                    </time>
+
+                    <span>•</span>
+
+                    <span>
+                        {article.data.readingTime} menit baca
+                    </span>
+                </div>
+            </header>
+
+            <div class="article-content mt-12">
+                <Content />
+            </div>
+
+            <footer class="mt-16 border-t border-border pt-8">
+                <div class="flex flex-wrap gap-2">
+                    {
+                        article.data.tags.map((tag) => (
+                            <span class="rounded-full bg-primary/10 px-3 py-1.5 text-xs font-medium text-primary">
+                                #{tag}
+                            </span>
+                        ))
+                    }
+                </div>
+
+                <a
+                    href="/artikel/"
+                    class="mt-10 inline-block text-sm font-semibold text-primary hover:underline"
+                >
+                    ← Lihat artikel lainnya
+                </a>
+            </footer>
+        </article>
+    </main>
+</BaseLayout>

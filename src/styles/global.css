@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+    --font-sans: "Inter", sans-serif;
+
+    --color-background: #fafaf8;
+    --color-foreground: #18181b;
+    --color-surface: #ffffff;
+    --color-primary: #635bff;
+    --color-muted: #71717a;
+    --color-border: #e4e4e7;
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-background text-foreground font-sans antialiased;
+    }
+
+    ::selection {
+        background: #635bff;
+        color: #ffffff;
+    }
+
+    a {
+        @apply transition-colors duration-200;
+    }
+}
+
+@layer components {
+    .container-site {
+        @apply mx-auto w-full max-w-7xl px-5 md:px-8 lg:px-12;
+    }
+
+    .section-spacing {
+        @apply py-16 md:py-24;
+    }
+
+    .eyebrow {
+        @apply text-xs font-semibold uppercase tracking-[0.2em] text-primary;
+    }
+}
